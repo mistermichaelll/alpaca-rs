@@ -1,7 +1,8 @@
 use reqwest::Url;
 
 pub const BASE_URL_PAPER_API: &str = "https://paper-api.alpaca.markets/v2/";
-pub const BASE_URL_CRYPTO_SANDBOX: &str = "https://data.sandbox.alpaca.markets/v1beta3/crypto/";
+pub const BASE_URL_CRYPTO_SANDBOX: &str = "https://data.sandbox.alpaca.markets/v1beta3/crypto/us/"; // default to us for dev
+pub const BASE_URL_CRYPTO: &str = "https://data.alpaca.markets/v1beta3/crypto/us/"; // default to us for dev
 
 #[derive(Clone, Debug)]
 pub struct Alpaca {
@@ -32,7 +33,7 @@ impl Alpaca {
     ) -> reqwest::RequestBuilder {
         let base = Url::parse(base_url).expect("Failed to parse URL.");
 
-        let url = base.join(path).expect("Couldn't parse URL???");
+        let url = base.join(path).expect("Couldn't join URL.");
 
         self.client
             .request(method, url)
