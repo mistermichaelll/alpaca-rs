@@ -7,6 +7,8 @@ use std::{collections::HashMap, error::Error};
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum CryptoCurrency {
     // there are a lot more than this, but i'm not typing them all out rn.
+    // there's an argument to be made to just accept a string input rather than enumerating these,
+    // but unlike the stocks there's only a limited number of cryptocurrencies on the site.
     BTC,
     ETH,
     SHIB,
