@@ -1,5 +1,5 @@
-use alpaca_rs::trading::*;
-use alpaca_rs::{Alpaca, PositionIntent, TimeInForce};
+use alpaca_rs::trading::orders;
+use alpaca_rs::{Alpaca, CryptoOrder, PositionIntent, TimeInForce};
 use dotenvy;
 
 #[tokio::main]
@@ -14,7 +14,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let order = orders::Order::new(
         String::from("ETH/USD"),
         TimeInForce::GoodTilCancelled,
-        String::from("market"),
+        CryptoOrder::Market,
         5,
         None,
         PositionIntent::BuyToOpen,

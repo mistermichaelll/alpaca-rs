@@ -10,6 +10,26 @@ pub enum PositionIntent {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub enum StockOrder {
+    #[serde(rename = "market")]
+    Market,
+    #[serde(rename = "limit")]
+    Limit,
+    #[serde(rename = "stop")]
+    Stop,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum CryptoOrder {
+    #[serde(rename = "market")]
+    Market,
+    #[serde(rename = "limit")]
+    Limit,
+    #[serde(rename = "stop_limit")]
+    StopLimit,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub enum TimeInForce {
     #[serde(rename = "d")]
     Day,

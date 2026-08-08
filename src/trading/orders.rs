@@ -6,26 +6,28 @@ use serde::{Deserialize, Serialize};
 use std::error::Error;
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Order {
+pub struct Order<T> {
     symbol: String,
     time_in_force: TimeInForce,
     #[serde(rename = "type")]
-    order_type: String,
+    order_type: T,
     qty: u32,
     #[serde(with = "rust_decimal::serde::str_option")]
     limit_price: Option<rust_decimal::Decimal>,
     position_intent: PositionIntent,
 }
+pub type StockOrderType = Order<StockOrder>;
+pub type CryptoOrderType = Order<CryptoOrder>;
 
-impl Order {
+impl<T> Order<T> {
     pub fn new(
         symbol: String,
         time_in_force: TimeInForce,
-        order_type: String,
+        order_type: T,
         quantity: u32,
         limit_price: Option<Decimal>,
         position_intent: PositionIntent,
-    ) -> Order {
+    ) -> Order<T> {
         Self {
             symbol: symbol,
             time_in_force: time_in_force,
@@ -41,7 +43,10 @@ impl Alpaca {
     //
     // Sends an order to the trading API.
     //
-    pub async fn send_order(&self, o: Order) -> Result<ExecutionReport, Box<dyn Error>> {
+    pub async fn send_order<T: Serialize>(
+        &self,
+        o: Order<T>,
+    ) -> Result<ExecutionReport, Box<dyn Error>> {
         let res = self
             .request(BASE_URL_PAPER_API, reqwest::Method::POST, "orders")
             .header("accept", "application/json")
