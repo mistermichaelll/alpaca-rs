@@ -1,4 +1,7 @@
-pub const BASE_URL_PAPER_MARKETS: &str = "https://paper-api.alpaca.markets/v2/";
+use reqwest::Url;
+
+pub const BASE_URL_PAPER_API: &str = "https://paper-api.alpaca.markets/v2/";
+pub const BASE_URL_CRYPTO_SANDBOX: &str = "https://data.sandbox.alpaca.markets/v1beta3/crypto/";
 
 #[derive(Clone, Debug)]
 pub struct Alpaca {
@@ -21,8 +24,13 @@ impl Alpaca {
         }
     }
 
-    pub fn request(&self, method: reqwest::Method, path: &str) -> reqwest::RequestBuilder {
-        let base = reqwest::Url::parse(BASE_URL_PAPER_MARKETS).expect("Failed to parse URL.");
+    pub fn request(
+        &self,
+        base_url: &str,
+        method: reqwest::Method,
+        path: &str,
+    ) -> reqwest::RequestBuilder {
+        let base = Url::parse(base_url).expect("Failed to parse URL.");
 
         let url = base.join(path).expect("Couldn't parse URL???");
 

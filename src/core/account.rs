@@ -1,4 +1,5 @@
 use crate::core::client::Alpaca;
+use crate::core::client::BASE_URL_PAPER_API;
 use jiff::civil::Date;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, error::Error};
@@ -49,7 +50,10 @@ impl Alpaca {
     /// Return your Alpaca account details.
     ///
     pub async fn get_account(&self) -> Result<Account, Box<dyn Error>> {
-        let res = self.request(reqwest::Method::GET, "account").send().await?;
+        let res = self
+            .request(BASE_URL_PAPER_API, reqwest::Method::GET, "account")
+            .send()
+            .await?;
 
         let body: Account = res.json().await?;
 
