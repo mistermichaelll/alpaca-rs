@@ -5,7 +5,8 @@ edition = "2024"
 
 [dependencies]
 jiff = {version = "0.2.35", features = ["serde"]}
-reqwest = {version = "0.13.4", features = ["json", "query"]}
+reqwest = {version = "0.13.4", features = ["json", "query", "form"]}
+rust_decimal = { version = "1.42.1", features = ["serde-float", "serde-with-str"] }
 serde = {version = "1.0.229", features = ["derive"]}
 serde_json = "1.0.151"
 tokio = { version = "1", features = ["full"] }
