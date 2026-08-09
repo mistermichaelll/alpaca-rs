@@ -11,28 +11,32 @@ pub struct Order<T> {
     time_in_force: TimeInForce,
     #[serde(rename = "type")]
     order_type: T,
-    qty: u32,
+    qty: Quantity,
     #[serde(with = "rust_decimal::serde::str_option")]
     limit_price: Option<rust_decimal::Decimal>,
     position_intent: PositionIntent,
 }
+
 pub type StockOrderType = Order<StockOrder>;
 pub type CryptoOrderType = Order<CryptoOrder>;
 
 impl<T> Order<T> {
-    pub fn new(
+    pub fn new<Q>(
         symbol: String,
         time_in_force: TimeInForce,
         order_type: T,
-        quantity: u32,
+        quantity: Q,
         limit_price: Option<Decimal>,
         position_intent: PositionIntent,
-    ) -> Order<T> {
+    ) -> Order<T>
+    where
+        Q: Into<Quantity>,
+    {
         Self {
             symbol: symbol,
             time_in_force: time_in_force,
             order_type: order_type,
-            qty: quantity,
+            qty: quantity.into(),
             limit_price: limit_price,
             position_intent: position_intent,
         }

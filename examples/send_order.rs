@@ -12,10 +12,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     let order = orders::Order::new(
-        String::from("ETH/USD"),
+        String::from("BTC/USD"),
         TimeInForce::GoodTilCancelled,
         CryptoOrder::Market,
-        5,
+        0.5,
         None,
         PositionIntent::BuyToOpen,
     );

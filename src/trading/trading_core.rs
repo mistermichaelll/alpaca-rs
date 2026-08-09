@@ -30,6 +30,24 @@ pub enum CryptoOrder {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(untagged)]
+pub enum Quantity {
+    Float(f64),
+    Int(i64),
+}
+impl From<i64> for Quantity {
+    fn from(val: i64) -> Self {
+        Quantity::Int(val)
+    }
+}
+
+impl From<f64> for Quantity {
+    fn from(val: f64) -> Self {
+        Quantity::Float(val)
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub enum TimeInForce {
     #[serde(rename = "d")]
     Day,
