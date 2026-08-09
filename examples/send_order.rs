@@ -11,16 +11,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::env::var("ALPACA_PAPER_SECRET_KEY")?,
     );
 
-    let order = Order::new(
-        String::from("BTC/USD"),
-        TimeInForce::GoodTilCancelled,
-        CryptoOrder::Market,
-        0.5,
-        None,
-        PositionIntent::BuyToOpen,
-    );
+    let order = Order::builder()
+        .symbol("ETH/USD")
+        .time_in_force(TimeInForce::GoodTilCancelled)
+        .order_type(CryptoOrder::Market)
+        .quantity(3)
+        .position_intent(PositionIntent::BuyToOpen)
+        .build();
 
-    let r = alpaca.send_order(order).await?;
+    let r = alpaca.send_order(order?).await?;
 
     println!("{}", serde_json::to_string(&r)?);
 

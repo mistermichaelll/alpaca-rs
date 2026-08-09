@@ -20,26 +20,99 @@ pub struct Order<T> {
 pub type StockOrderType = Order<StockOrder>;
 pub type CryptoOrderType = Order<CryptoOrder>;
 
-impl<T> Order<T> {
-    pub fn new<Q>(
-        symbol: String,
-        time_in_force: TimeInForce,
-        order_type: T,
-        quantity: Q,
-        limit_price: Option<Decimal>,
-        position_intent: PositionIntent,
-    ) -> Order<T>
-    where
-        Q: Into<Quantity>,
-    {
+pub struct OrderBuilder<T> {
+    symbol: Option<String>,
+    time_in_force: Option<TimeInForce>,
+    order_type: Option<T>,
+    qty: Option<Quantity>,
+    limit_price: Option<Option<Decimal>>,
+    position_intent: Option<PositionIntent>,
+}
+
+// impl<T> Order<T> {
+//     pub fn new<Q>(
+//         symbol: String,
+//         time_in_force: TimeInForce,
+//         order_type: T,
+//         quantity: Q,
+//         limit_price: Option<Decimal>,
+//         position_intent: PositionIntent,
+//     ) -> Order<T>
+//     where
+//         Q: Into<Quantity>,
+//     {
+//         Self {
+//             symbol: symbol,
+//             time_in_force: time_in_force,
+//             order_type: order_type,
+//             qty: quantity.into(),
+//             limit_price: limit_price,
+//             position_intent: position_intent,
+//         }
+//     }
+// }
+
+impl<T> OrderBuilder<T> {
+    pub fn new() -> Self {
         Self {
-            symbol: symbol,
-            time_in_force: time_in_force,
-            order_type: order_type,
-            qty: quantity.into(),
-            limit_price: limit_price,
-            position_intent: position_intent,
+            symbol: None,
+            time_in_force: None,
+            order_type: None,
+            qty: None,
+            limit_price: None,
+            position_intent: None,
         }
+    }
+
+    pub fn symbol(mut self, symbol: &str) -> Self {
+        self.symbol = Some(symbol.to_string());
+        self
+    }
+
+    pub fn time_in_force(mut self, tif: TimeInForce) -> Self {
+        self.time_in_force = Some(tif);
+        self
+    }
+
+    pub fn order_type(mut self, ot: T) -> Self {
+        self.order_type = Some(ot);
+        self
+    }
+
+    pub fn quantity<Q: Into<Quantity>>(mut self, qty: Q) -> Self {
+        self.qty = Some(qty.into());
+        self
+    }
+
+    pub fn limit_price(mut self, price: Option<Decimal>) -> Self {
+        self.limit_price = Some(price);
+        self
+    }
+
+    pub fn position_intent(mut self, intent: PositionIntent) -> Self {
+        self.position_intent = Some(intent);
+        self
+    }
+
+    pub fn build(self) -> Result<Order<T>, String> {
+        Ok(Order {
+            symbol: self.symbol.ok_or("Symbol is required")?,
+            time_in_force: self.time_in_force.ok_or("Time in force is required")?,
+            order_type: self.order_type.ok_or("Order type is required")?,
+            qty: self.qty.ok_or("Quantity is required")?,
+            limit_price: self.limit_price.unwrap_or(None),
+            position_intent: self.position_intent.ok_or("Position intent is required")?,
+        })
+    }
+
+    pub fn builder() -> OrderBuilder<T> {
+        OrderBuilder::new()
+    }
+}
+
+impl<T> Order<T> {
+    pub fn builder() -> OrderBuilder<T> {
+        OrderBuilder::new()
     }
 }
 
