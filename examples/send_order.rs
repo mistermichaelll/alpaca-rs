@@ -1,4 +1,4 @@
-use alpaca_rs::trading::orders;
+use alpaca_rs::trading::orders::Order;
 use alpaca_rs::{Alpaca, CryptoOrder, PositionIntent, TimeInForce};
 use dotenvy;
 
@@ -11,7 +11,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::env::var("ALPACA_PAPER_SECRET_KEY")?,
     );
 
-    let order = orders::Order::new(
+    let order = Order::new(
         String::from("BTC/USD"),
         TimeInForce::GoodTilCancelled,
         CryptoOrder::Market,

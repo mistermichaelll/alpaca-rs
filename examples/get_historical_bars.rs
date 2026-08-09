@@ -10,7 +10,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::env::var("ALPACA_SECRET_KEY")?,
     );
 
-    let body = alpaca
+    let bars = alpaca
         .get_historical_bars(
             TimeFrame::Hour,
             5,
@@ -18,6 +18,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .await?;
 
-    println!("{}", serde_json::to_string(&body)?);
+    println!("{}", serde_json::to_string(&bars)?);
     Ok(())
 }
