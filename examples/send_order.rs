@@ -17,9 +17,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .order_type(CryptoOrder::Market)
         .quantity(3)
         .position_intent(PositionIntent::BuyToOpen)
-        .build();
+        .build()
+        .expect("Failed to build the order.");
 
-    let r = alpaca.send_order(order?).await?;
+    let r = alpaca.send_order(order).await?;
 
     println!("{}", serde_json::to_string(&r)?);
 
