@@ -12,7 +12,7 @@ pub struct Alpaca {
 }
 
 impl Alpaca {
-    pub fn http_client(api_token: impl Into<String>, secret_token: impl Into<String>) -> Alpaca {
+    pub fn http_client(api_token: String, secret_token: String) -> Alpaca {
         let client = reqwest::Client::builder()
             .timeout(std::time::Duration::from_secs(30))
             .build()
@@ -20,8 +20,8 @@ impl Alpaca {
 
         Self {
             client,
-            api_token: api_token.into(),
-            secret_token: secret_token.into(),
+            api_token: api_token,
+            secret_token: secret_token,
         }
     }
 

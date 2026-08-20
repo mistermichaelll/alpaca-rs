@@ -29,29 +29,6 @@ pub struct OrderBuilder<T> {
     position_intent: Option<PositionIntent>,
 }
 
-// impl<T> Order<T> {
-//     pub fn new<Q>(
-//         symbol: String,
-//         time_in_force: TimeInForce,
-//         order_type: T,
-//         quantity: Q,
-//         limit_price: Option<Decimal>,
-//         position_intent: PositionIntent,
-//     ) -> Order<T>
-//     where
-//         Q: Into<Quantity>,
-//     {
-//         Self {
-//             symbol: symbol,
-//             time_in_force: time_in_force,
-//             order_type: order_type,
-//             qty: quantity.into(),
-//             limit_price: limit_price,
-//             position_intent: position_intent,
-//         }
-//     }
-// }
-
 impl<T> OrderBuilder<T> {
     pub fn new() -> Self {
         Self {
@@ -132,6 +109,7 @@ impl Alpaca {
             .await?;
 
         let status = &res.status();
+
         if !status.is_success() {
             let error_text = res.text().await?;
             return Err(format!("Alpaca API Error ({}): {}", status, error_text).into());

@@ -63,19 +63,6 @@ pub enum TimeInForce {
     FillOrKill,
 }
 
-impl TimeInForce {
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            TimeInForce::Day => "day",
-            TimeInForce::GoodTilCancelled => "gtc",
-            TimeInForce::AtTheOpening => "opg",
-            TimeInForce::AtTheClose => "cls",
-            TimeInForce::ImmediateOrCancel => "ioc",
-            TimeInForce::FillOrKill => "fok",
-        }
-    }
-}
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Leg {}
 

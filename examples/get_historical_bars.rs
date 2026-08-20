@@ -13,7 +13,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let bars = alpaca
         .get_historical_bars(
             TimeFrame::Hour,
-            5,
+            1,
             vec![(CryptoCurrency::BTC, Currency::USD)],
         )
         .await?;
